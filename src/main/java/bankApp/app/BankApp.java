@@ -12,8 +12,8 @@ public class BankApp {
 
     public static void main(String[] args) {
         //test to access account
-        AccountRepo ar = new AccountRepoDBImpl();
-        Account account = new Account();
+//        AccountRepo ar = new AccountRepoDBImpl();
+//        Account account = new Account();
 
         Scanner scan = new Scanner(System.in);
 
@@ -22,11 +22,12 @@ public class BankApp {
         int logOrRegister = scan.nextInt();
 
         if(logOrRegister == 1){
-            Account.register();
-            System.out.println("Please log in");
+            //call login method
             Account.userLogin();
         } else if (logOrRegister == 2){
-            //call login method
+            //call register method followed by login method
+            Account.register();
+            System.out.println("Please log in");
             Account.userLogin();
         }
     }

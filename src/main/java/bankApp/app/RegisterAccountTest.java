@@ -17,10 +17,12 @@ public class RegisterAccountTest {
         String username = scan.nextLine();
         System.out.println("Enter password");
         String password = scan.nextLine();
+        System.out.println("Enter your available funds");
+        double funds = scan.nextDouble();
 //        String validation = String.valueOf(ar.login(username,password));
 
 //        Account account = new Account();
-        if (ar.addAccount(username, password) != null && username != "" && password != "" ) {
+        if (ar.addAccount(username, password, funds) != null && username != "" && password != "" ) {
             System.out.println("Account for " + username + " is registered!");
 
         } else {

@@ -61,18 +61,20 @@ public class AccountRepoDBImpl implements AccountRepo {
 
 
     @Override
-    public Account addAccount(String username, String password){
-        String sql = "INSERT INTO account VALUES (default, ?, ?) RETURNING *";
+    public Account addAccount(String username, String password, double funds){
+        String sql = "INSERT INTO account VALUES (default, ?, ?, ?, default, default) RETURNING *";
         Account account = null;
         try{
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setString(1, username);
             ps.setString(2, password);
+            ps.setDouble(3, funds);
             ResultSet rs = ps.executeQuery();
             if(rs.next()){
                 account = new Account();
                 account.setUsername(rs.getString("username"));
                 account.setUsername(rs.getString("password"));
+                account.setFunds(rs.getDouble(6));
 
                 return buildAccount(rs);
             }
@@ -84,13 +86,15 @@ public class AccountRepoDBImpl implements AccountRepo {
 
     public Account getAccount(int id) {
         //Make a String for the SQL statement you want executed. Use Placeholders for data values.
-        String sql = "SELECT * FROM account WHERE a_id = ?";
+        String sql = "SELECT * FROM account WHERE a_id = ? and username = ? and password = ? and funds = ? and savings = ? and checking = ?";
 
         try {
             //Set up PreparedStatement
             PreparedStatement ps = conn.prepareStatement(sql);
             //Set values for any Placeholders
             ps.setInt(1, id);
+
+
 
             //Execute the query, store the results -> ResultSet
             ResultSet rs = ps.executeQuery();
@@ -110,6 +114,10 @@ public class AccountRepoDBImpl implements AccountRepo {
         a.setId(rs.getInt("a_id"));
         a.setUsername(rs.getString("username"));
         a.setPassword(rs.getString("password"));
+        a.setFunds(rs.getDouble("funds"));
+        a.setSavings(rs.getDouble("savings"));
+        a.setChecking(rs.getDouble("checking"));
+
         return a;
     }
 }
