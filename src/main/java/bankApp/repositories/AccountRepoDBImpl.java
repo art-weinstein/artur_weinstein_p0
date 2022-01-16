@@ -1,9 +1,8 @@
 package bankApp.repositories;
 
 import bankApp.models.Account;
-//import bankApp.util.GenericLinkedList;
 import bankApp.util.JDCConnection;
-//import bankApp.util.ResourceNotFoundException;
+
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -49,21 +48,10 @@ public class AccountRepoDBImpl implements AccountRepo {
         return null;
     }
 
-//    @Override
-//    public Account login(int id) {
-//        return null;
-//    }
-
-//    @Override
-//    public Account login(int id) {
-//        return null;
-//    }
-
-
     @Override
     public Account addAccount(String username, String password, double funds){
         String sql = "INSERT INTO account VALUES (default, ?, ?, ?, default, default) RETURNING *";
-        Account account = null;
+        Account account = new Account();
         try{
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setString(1, username);
@@ -71,10 +59,10 @@ public class AccountRepoDBImpl implements AccountRepo {
             ps.setDouble(3, funds);
             ResultSet rs = ps.executeQuery();
             if(rs.next()){
-                account = new Account();
+//                account = new Account();
                 account.setUsername(rs.getString("username"));
                 account.setUsername(rs.getString("password"));
-                account.setFunds(rs.getDouble(6));
+                account.setFunds(rs.getDouble("funds"));
 
                 return buildAccount(rs);
             }
@@ -108,6 +96,132 @@ public class AccountRepoDBImpl implements AccountRepo {
         }
         return null;
     }
+
+    @Override
+    public Account transferFundsToChecking(Account change) {
+        String sql = "UPDATE account set funds = ?, checking = ? WHERE a_id = ? RETURNING*";
+
+        try{
+            PreparedStatement ps = conn.prepareStatement(sql);
+
+            ps.setDouble(1, change.getFunds());
+            ps.setDouble(2, change.getChecking());
+            ps.setInt(3, change.getId());
+            ResultSet rs = ps.executeQuery();
+
+            if(rs.next()){
+                return buildAccount(rs);
+            }
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+    @Override
+    public Account transferFundsToSavings(Account change) {
+        String sql = "UPDATE account set funds = ?, savings = ? WHERE a_id = ? RETURNING*";
+
+        try{
+            PreparedStatement ps = conn.prepareStatement(sql);
+
+            ps.setDouble(1, change.getFunds());
+            ps.setDouble(2, change.getSavings());
+            ps.setInt(3, change.getId());
+            ResultSet rs = ps.executeQuery();
+
+            if(rs.next()){
+                return buildAccount(rs);
+            }
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+
+    @Override
+    public Account transferCheckingToSavings(Account change) {
+        String sql = "UPDATE account set checking = ?, savings = ? WHERE a_id = ? RETURNING*";
+        try{
+            PreparedStatement ps = conn.prepareStatement(sql);
+
+            ps.setDouble(1, change.getChecking());
+            ps.setDouble(2, change.getSavings());
+            ps.setInt(3, change.getId());
+            ResultSet rs = ps.executeQuery();
+
+            if(rs.next()){
+                return buildAccount(rs);
+            }
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @Override
+    public Account transferSavingsToChecking(Account change) {
+        String sql = "UPDATE account set savings = ?, checking = ? WHERE a_id = ? RETURNING*";
+
+        try{
+            PreparedStatement ps = conn.prepareStatement(sql);
+
+            ps.setDouble(1, change.getSavings());
+            ps.setDouble(2, change.getChecking());
+            ps.setInt(3, change.getId());
+            ResultSet rs = ps.executeQuery();
+
+            if(rs.next()){
+                return buildAccount(rs);
+            }
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @Override
+    public Account withdrawFromSavings(Account change) {
+        String sql = "UPDATE account set savings = ?, funds = ? WHERE a_id = ? RETURNING*";
+
+        try{
+            PreparedStatement ps = conn.prepareStatement(sql);
+
+            ps.setDouble(1, change.getSavings());
+            ps.setDouble(2, change.getFunds());
+            ps.setInt(3, change.getId());
+            ResultSet rs = ps.executeQuery();
+
+            if(rs.next()){
+                return buildAccount(rs);
+            }
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @Override
+    public Account withdrawFromChecking(Account change) {
+        String sql = "UPDATE account set checking = ?, funds = ? WHERE a_id = ? RETURNING*";
+
+        try{
+            PreparedStatement ps = conn.prepareStatement(sql);
+
+            ps.setDouble(1, change.getChecking());
+            ps.setDouble(2, change.getFunds());
+            ps.setInt(3, change.getId());
+            ResultSet rs = ps.executeQuery();
+
+            if(rs.next()){
+                return buildAccount(rs);
+            }
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 
     private Account buildAccount(ResultSet rs) throws  SQLException{
         Account a = new Account();

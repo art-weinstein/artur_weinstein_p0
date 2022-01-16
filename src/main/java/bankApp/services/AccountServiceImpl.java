@@ -24,7 +24,13 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public boolean loggedin(Account a) {
+    public boolean loggedIn(Account a) {
         return false;
     }
+
+    @Override
+    public Account transferFundsToChecking(Account change){
+        return ar.transferFundsToChecking(change);
+    }
+
 }
