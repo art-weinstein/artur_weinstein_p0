@@ -15,7 +15,8 @@ import static sun.security.jgss.GSSUtil.login;
 public class bankTest {
     Scanner scan = new Scanner(System.in);
     static AccountRepo ar = new AccountRepoDBImpl();
-    Account account1 = new Account();
+//    Account account1 = new Account();
+//    AccountRepo ar = new AccountRepoDBImpl();
 
     @BeforeAll
     public static void setUp() {
@@ -28,11 +29,16 @@ public class bankTest {
 
     @Test
     public void getId() {
-        AccountRepo ar = new AccountRepoDBImpl();
         username = "art";
         password = "password";
         ar.login(username, password);
         assertEquals(2, id);
+        assertEquals(0, funds);
+        assertEquals(6000, checking);
+        assertEquals(0, savings);
     }
+
+//    @Test
+
 
 }

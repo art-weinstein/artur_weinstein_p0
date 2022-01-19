@@ -266,28 +266,28 @@ public class Account {
         }
     }
 
-    public Account(int id, String username, String password){
-        this.id = id;
-        this.username = username;
-        this.password = password;
-    }
+//    public Account(int id, String username, String password){
+//        this.id = id;
+//        this.username = username;
+//        this.password = password;
+//    }
+//
+//    public Account(String username, String password){
+//        this.username = username;
+//        this.password = password;
+//    }
 
-    public Account(String username, String password){
-        this.username = username;
-        this.password = password;
-    }
+//    public void login() {
+//        this.id = id;
+//    }
 
-    public void login() {
-        this.id = id;
-    }
-
-    public void getAccount(){
-        this.id = id;
-    }
-
-    public int getAccount(int id){
-        return id;
-    }
+//    public void getAccount(){
+//        this.id = id;
+//    }
+//
+//    public int getAccount(int id){
+//        return id;
+//    }
 
     public int getId() {
         return id;
@@ -297,17 +297,17 @@ public class Account {
         this.id = id;
     }
 
-    public String getUsername() {
-        return username;
-    }
+//    public String getUsername() {
+//        return username;
+//    }
 
     public void setUsername(String username) {
         this.username = username;
     }
 
-    public String getPassword() {
-        return password;
-    }
+//    public String getPassword() {
+//        return password;
+//    }
 
     public void setPassword(String password) {
         this.password = password;
