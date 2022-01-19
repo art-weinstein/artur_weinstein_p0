@@ -198,53 +198,65 @@ public class Account {
     }
 
     public static String withdrawSavings() {
-        Scanner scan = new Scanner(System.in);
-        AccountRepo ar = new AccountRepoDBImpl();
-        System.out.println("Enter an amount to withdraw from savings to funds");
-        System.out.println("Current savings: " + savings + " | current funds: " + funds);
-        double savingToFunds = scan.nextDouble();
-        int transferred = 0;
-        Account account = new Account();
-        while (ar.withdrawFromSavings(account) != null && transferred == 0) {
-            if (savingToFunds <= savings) {
-                funds += savingToFunds;
-                savings -= savingToFunds;
-                System.out.println("Funds: " + funds + " | checking " + checking + " | savings " + savings);
-                transferred = 1;
-            } else {
-                System.out.println("Insufficient savings, please enter a valid amount!");
-                System.out.println("Current savings:");
-                System.out.println(savings);
-                System.out.println("Current funds");
-                System.out.println(funds);
-                savingToFunds = scan.nextDouble();
+        boolean reRun = true;
+        while (reRun) {
+            Scanner scan = new Scanner(System.in);
+            try {
+                AccountRepo ar = new AccountRepoDBImpl();
+                System.out.println("Enter an amount to withdraw from savings to funds");
+                System.out.println("Current savings: " + savings + " | current funds: " + funds);
+                double savingToFunds = scan.nextDouble();
+                Account account = new Account();
+                while (ar.withdrawFromSavings(account) != null && reRun) {
+                    if (savingToFunds <= savings) {
+                        funds += savingToFunds;
+                        savings -= savingToFunds;
+                        System.out.println("Funds: " + funds + " | checking " + checking + " | savings " + savings);
+                        reRun = false;
+                    } else {
+                        System.out.println("Insufficient savings, please enter a valid amount!");
+                        System.out.println("Current savings:");
+                        System.out.println(savings);
+                        System.out.println("Current funds");
+                        System.out.println(funds);
+                        savingToFunds = scan.nextDouble();
+                    }
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("Please enter a valid input!");
             }
         }
-        return "Please select an option";
+            return "Please select an option";
     }
 
     public static String withdrawChecking() {
-        Scanner scan = new Scanner(System.in);
-        AccountRepo ar = new AccountRepoDBImpl();
-        System.out.println("Enter an amount to withdraw from checking to funds");
-        System.out.println("Current checking: " + checking + " | current funds: " + funds);
-        double checkingToFunds = scan.nextDouble();
-        int transferred = 0;
-        Account account = new Account();
         boolean reRun = true;
-        while (ar.withdrawFromChecking(account) != null && transferred == 0) {
-            if (checkingToFunds <= checking) {
-                funds += checkingToFunds;
-                checking -= checkingToFunds;
-                System.out.println("Funds: " + funds + " | checking " + checking + " | savings " + savings);
-                transferred = 1;
-            } else {
-                System.out.println("Insufficient funds in checking, please enter a valid amount!");
-                System.out.println("Current checking:");
-                System.out.println(checking);
-                System.out.println("Current funds");
-                System.out.println(funds);
-                checkingToFunds = scan.nextDouble();
+        while (reRun) {
+            Scanner scan = new Scanner(System.in);
+            try {
+                AccountRepo ar = new AccountRepoDBImpl();
+                System.out.println("Enter an amount to withdraw from checking to funds");
+                System.out.println("Current checking: " + checking + " | current funds: " + funds);
+                double checkingToFunds = scan.nextDouble();
+                int transferred = 0;
+                Account account = new Account();
+                while (ar.withdrawFromChecking(account) != null && reRun) {
+                    if (checkingToFunds <= checking) {
+                        funds += checkingToFunds;
+                        checking -= checkingToFunds;
+                        System.out.println("Funds: " + funds + " | checking " + checking + " | savings " + savings);
+                        reRun = false;
+                    } else {
+                        System.out.println("Insufficient funds in checking, please enter a valid amount!");
+                        System.out.println("Current checking:");
+                        System.out.println(checking);
+                        System.out.println("Current funds");
+                        System.out.println(funds);
+                        checkingToFunds = scan.nextDouble();
+                    }
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("Please enter a valid input!");
             }
         }
         return "Please select an option";
