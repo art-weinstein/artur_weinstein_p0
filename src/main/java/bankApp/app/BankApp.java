@@ -12,7 +12,7 @@ public class BankApp {
 
     }
 
-    static Account account = new Account();
+    public static Account account = new Account();
 
     public static void main(String[] args) {
 

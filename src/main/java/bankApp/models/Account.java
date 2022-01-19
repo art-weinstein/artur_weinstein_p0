@@ -13,10 +13,14 @@ public class Account {
     public static double funds;
     public static double savings;
     public static double checking;
+    public static double[] accounts = new double[] {funds, checking, savings};
 
     public Account() {
     }
 
+//    public static void Accounts(){
+//        accounts = new double[]{funds, checking, savings};
+//    }
 
     public static void register() {
         Scanner scan = new Scanner(System.in);
@@ -27,8 +31,8 @@ public class Account {
         System.out.println("Enter password");
         String password = scan.nextLine();
         System.out.println("Enter your available funds");
-        double funds = scan.nextDouble();
-        if (ar.addAccount(username, password, funds) != null && username != "" && password != "") {
+        accounts[0] = scan.nextDouble();
+        if (ar.addAccount(username, password, accounts[0]) != null && username != "" && password != "") {
             System.out.println("Account for " + username + " is registered!");
 
         } else {
@@ -318,13 +322,20 @@ public class Account {
         this.id = id;
     }
 
-
     public void setUsername(String username) {
         this.username = username;
     }
 
+    public String getUsername(){
+        return username;
+    }
+
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getPassword(){
+        return password;
     }
 
     public double getFunds() {
