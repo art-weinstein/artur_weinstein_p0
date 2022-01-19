@@ -63,55 +63,71 @@ public class Account {
     }
 
     public static String transferToChecking() {
-        Scanner scan = new Scanner(System.in);
-        AccountRepo ar = new AccountRepoDBImpl();
-        System.out.println("Enter an amount to transfer from personal funds to checking");
-        System.out.println("Current funds: " + funds + " | current checking: " + checking);
-        double fundTransfer = scan.nextDouble();
-        int transferred = 0;
-        Account account = new Account();
-        while (ar.transferFundsToChecking(account) != null && transferred == 0) {
-            if (fundTransfer <= funds) {
-                checking += fundTransfer;
-                funds -= fundTransfer;
-                System.out.println("Funds: " + funds + " | checking " + checking + " | savings " + savings);
-                transferred = 1;
-            } else {
-                System.out.println("Insufficient funds, please enter a valid amount!");
-                System.out.println("Current funds:");
-                System.out.println(funds);
-                System.out.println("Current Checking");
-                System.out.println(checking);
-                fundTransfer = scan.nextDouble();
+        boolean reRun = true;
+        while (reRun) {
+            Scanner scan = new Scanner(System.in);
+            try {
+                AccountRepo ar = new AccountRepoDBImpl();
+                System.out.println("Enter an amount to transfer from personal funds to checking");
+                System.out.println("Current funds: " + funds + " | current checking: " + checking);
+                double fundTransfer = scan.nextDouble();
+                Account account = new Account();
+                while (ar.transferFundsToChecking(account) != null && reRun) {
+                    if (fundTransfer <= funds) {
+                        checking += fundTransfer;
+                        funds -= fundTransfer;
+                        System.out.println("Funds: " + funds + " | checking " + checking + " | savings " + savings);
+                        reRun = false;
+                    } else {
+                        System.out.println("Insufficient funds, please enter a valid amount!");
+                        System.out.println("Current funds:");
+                        System.out.println(funds);
+                        System.out.println("Current Checking");
+                        System.out.println(checking);
+                        fundTransfer = scan.nextDouble();
+                    }
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("Please enter a valid input!");
+                scan.next();
             }
         }
         return "Please select an option";
     }
 
     public static String transferToSavings() {
-        Scanner scan = new Scanner(System.in);
-        AccountRepo ar = new AccountRepoDBImpl();
-        System.out.println("Enter an amount to transfer from personal funds to savings");
-        System.out.println("Current funds: " + funds + " | current savings: " + savings);
-        double savingTransfer = scan.nextDouble();
-        int transferred = 0;
-        Account account = new Account();
-        while (ar.transferFundsToSavings(account) != null && transferred == 0) {
-            if (savingTransfer <= funds) {
-                savings += savingTransfer;
-                funds -= savingTransfer;
-                System.out.println("Funds: " + funds + " | checking " + checking + " | savings " + savings);
-                transferred = 1;
-            } else {
-                System.out.println("Insufficient funds, please enter a valid amount!");
-                System.out.println("Current funds:");
-                System.out.println(funds);
-                System.out.println("Current savings");
-                System.out.println(savings);
-                savingTransfer = scan.nextDouble();
+        boolean reRun = true;
+        while (reRun) {
+            Scanner scan = null;
+            try {
+                scan = new Scanner(System.in);
+                AccountRepo ar = new AccountRepoDBImpl();
+                System.out.println("Enter an amount to transfer from personal funds to savings");
+                System.out.println("Current funds: " + funds + " | current savings: " + savings);
+                double savingTransfer = scan.nextDouble();
+                int transferred = 0;
+                Account account = new Account();
+                while (ar.transferFundsToSavings(account) != null && transferred == 0) {
+                    if (savingTransfer <= funds) {
+                        savings += savingTransfer;
+                        funds -= savingTransfer;
+                        System.out.println("Funds: " + funds + " | checking " + checking + " | savings " + savings);
+                        transferred = 1;
+                    } else {
+                        System.out.println("Insufficient funds, please enter a valid amount!");
+                        System.out.println("Current funds:");
+                        System.out.println(funds);
+                        System.out.println("Current savings");
+                        System.out.println(savings);
+                        savingTransfer = scan.nextDouble();
+                    }
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("Please enter a valid input!");
+                scan.next();
             }
         }
-        return "Please select an option";
+            return "Please select an option";
     }
 
     public static String checkingToSavings() {
@@ -149,18 +165,23 @@ public class Account {
         int transferred = 0;
         Account account = new Account();
         while (ar.transferSavingsToChecking(account) != null && transferred == 0) {
-            if (savingToCheck <= savings) {
-                checking += savingToCheck;
-                savings -= savingToCheck;
-                System.out.println("Funds: " + funds + " | checking " + checking + " | savings " + savings);
-                transferred = 1;
-            } else {
-                System.out.println("Insufficient savings, please enter a valid amount!");
-                System.out.println("Current savings:");
-                System.out.println(savings);
-                System.out.println("Current Checking");
-                System.out.println(savings);
-                savingToCheck = scan.nextDouble();
+            try {
+                if (savingToCheck <= savings) {
+                    checking += savingToCheck;
+                    savings -= savingToCheck;
+                    System.out.println("Funds: " + funds + " | checking " + checking + " | savings " + savings);
+                    transferred = 1;
+                } else {
+                    System.out.println("Insufficient savings, please enter a valid amount!");
+                    System.out.println("Current savings:");
+                    System.out.println(savings);
+                    System.out.println("Current Checking");
+                    System.out.println(savings);
+                    savingToCheck = scan.nextDouble();
+                }
+            } catch (InputMismatchException e){
+                System.out.println("Please enter a valid input!");
+                scan.nextDouble();
             }
         }
         return "Please select an option";
@@ -200,6 +221,7 @@ public class Account {
         double checkingToFunds = scan.nextDouble();
         int transferred = 0;
         Account account = new Account();
+        boolean reRun = true;
         while (ar.withdrawFromChecking(account) != null && transferred == 0) {
             if (checkingToFunds <= checking) {
                 funds += checkingToFunds;
@@ -266,29 +288,6 @@ public class Account {
         }
     }
 
-//    public Account(int id, String username, String password){
-//        this.id = id;
-//        this.username = username;
-//        this.password = password;
-//    }
-//
-//    public Account(String username, String password){
-//        this.username = username;
-//        this.password = password;
-//    }
-
-//    public void login() {
-//        this.id = id;
-//    }
-
-//    public void getAccount(){
-//        this.id = id;
-//    }
-//
-//    public int getAccount(int id){
-//        return id;
-//    }
-
     public int getId() {
         return id;
     }
@@ -297,17 +296,10 @@ public class Account {
         this.id = id;
     }
 
-//    public String getUsername() {
-//        return username;
-//    }
 
     public void setUsername(String username) {
         this.username = username;
     }
-
-//    public String getPassword() {
-//        return password;
-//    }
 
     public void setPassword(String password) {
         this.password = password;

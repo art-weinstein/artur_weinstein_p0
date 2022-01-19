@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import java.util.Scanner;
 
 import static bankApp.models.Account.*;
+import static bankApp.models.Account.transferToChecking;
 import static org.junit.jupiter.api.Assertions.*;
 import static sun.security.jgss.GSSUtil.login;
 
@@ -37,8 +38,5 @@ public class bankTest {
         assertEquals(6000, checking);
         assertEquals(0, savings);
     }
-
-//    @Test
-
 
 }
