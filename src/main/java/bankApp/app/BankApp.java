@@ -1,13 +1,11 @@
 package bankApp.app;
 import bankApp.models.Account;
-import javafx.scene.input.InputEvent;
-
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
 import static bankApp.models.Account.*;
 
-//import static bankApp.models.AccountMethods.userLogin;
+
 
 public class BankApp {
     public BankApp() {
@@ -17,9 +15,6 @@ public class BankApp {
     static Account account = new Account();
 
     public static void main(String[] args) {
-        //test to access account
-//        AccountRepo ar = new AccountRepoDBImpl();
-//        Account account = new Account();
 
         Scanner scan = new Scanner(System.in);
 
