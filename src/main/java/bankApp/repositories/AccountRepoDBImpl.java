@@ -20,7 +20,7 @@ public class AccountRepoDBImpl implements AccountRepo {
         //Make a String for the SQL statement you want executed. Use Placeholders for data values.
         String sql = "SELECT * FROM account WHERE username = ? and password = ?";
 
-        Account account = null;
+        Account account;
         try {
             //Set up PreparedStatement
             PreparedStatement ps = conn.prepareStatement(sql);
