@@ -164,31 +164,34 @@ public class Account {
     }
 
     public static String savingsToChecking() {
-        Scanner scan = new Scanner(System.in);
-        AccountRepo ar = new AccountRepoDBImpl();
-        System.out.println("Enter an amount to transfer from savings to checking");
-        System.out.println("Current savings: " + savings + " | current checking: " + checking);
-        double savingToCheck = scan.nextDouble();
-        int transferred = 0;
-        Account account = new Account();
-        while (ar.transferSavingsToChecking(account) != null && transferred == 0) {
+        boolean reRun = true;
+        while(reRun) {
+            Scanner scan = new Scanner(System.in);
             try {
-                if (savingToCheck <= savings) {
-                    checking += savingToCheck;
-                    savings -= savingToCheck;
-                    System.out.println("Funds: " + funds + " | checking " + checking + " | savings " + savings);
-                    transferred = 1;
-                } else {
-                    System.out.println("Insufficient savings, please enter a valid amount!");
-                    System.out.println("Current savings:");
-                    System.out.println(savings);
-                    System.out.println("Current Checking");
-                    System.out.println(savings);
-                    savingToCheck = scan.nextDouble();
+                AccountRepo ar = new AccountRepoDBImpl();
+                System.out.println("Enter an amount to transfer from savings to checking");
+                System.out.println("Current savings: " + savings + " | current checking: " + checking);
+                double savingToCheck = scan.nextDouble();
+
+                Account account = new Account();
+                while (ar.transferSavingsToChecking(account) != null && reRun) {
+                    if (savingToCheck <= savings) {
+                        checking += savingToCheck;
+                        savings -= savingToCheck;
+                        System.out.println("Funds: " + funds + " | checking " + checking + " | savings " + savings);
+                        reRun = false;
+                    } else {
+                        System.out.println("Insufficient savings, please enter a valid amount!");
+                        System.out.println("Current savings:");
+                        System.out.println(savings);
+                        System.out.println("Current Checking");
+                        System.out.println(savings);
+                        savingToCheck = scan.nextDouble();
+                    }
+                    scan.nextDouble();
                 }
-            } catch (InputMismatchException e){
+            } catch (InputMismatchException e) {
                 System.out.println("Please enter a valid input!");
-                scan.nextDouble();
             }
         }
         return "Please select an option";
