@@ -60,7 +60,7 @@ public class bankTest {
         Account account = new Account();
         ar.login("test5", "test5");
         account.getFunds();
-        assertEquals(account.getFunds(), 2000);
+        assertEquals(account.getFunds(), 0);
     }
 
 

@@ -20,7 +20,7 @@ public class BankApp {
         let the user log in, 2 will prompt them to register an account and set that
         account's initial funds
          */
-        System.out.println("Welcome to the bank! Please register an account.");
+        System.out.println("Welcome to the bank! Please register an account or log in.");
         System.out.println("Press 1 to log in or 2 register");
         int logOrRegister;
         boolean reRun = true;
