@@ -55,7 +55,7 @@ the methods you wish to test. Run each test by clicking the play button next to 
 
 * [MIT License](https://opensource.org/licenses/MIT)
 
-Copyright (c) 2021 Art Weinstein
+Copyright (c) 2022 Art Weinstein
 
 ## Contact Information
 
