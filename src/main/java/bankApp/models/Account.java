@@ -13,14 +13,15 @@ public class Account {
     public static double funds;
     public static double savings;
     public static double checking;
-    public static double[] accounts = new double[] {funds, checking, savings};
+    public static double[] accounts = new double[3];
 
     public Account() {
     }
 
-//    public static void Accounts(){
-//        accounts = new double[]{funds, checking, savings};
-//    }
+    public static String Accounts(){
+        accounts = new double[]{funds, checking, savings};
+        return "Funds: " + accounts[0] +  " | checking: " + accounts[1] + " | savings: " + accounts[2];
+    }
 
     public static void register() {
         Scanner scan = new Scanner(System.in);
@@ -31,8 +32,8 @@ public class Account {
         System.out.println("Enter password");
         String password = scan.nextLine();
         System.out.println("Enter your available funds");
-        accounts[0] = scan.nextDouble();
-        if (ar.addAccount(username, password, accounts[0]) != null && username != "" && password != "") {
+        funds = scan.nextDouble();
+        if (ar.addAccount(username, password, funds) != null && username != "" && password != "") {
             System.out.println("Account for " + username + " is registered!");
 
         } else {
@@ -50,10 +51,9 @@ public class Account {
         int validated = 0;
         while (validated == 0) {
             if (ar.login(username, password) != null) {
+                Accounts();
                 System.out.println("Welcome " + username);
-                System.out.println("Funds: " + funds);
-                System.out.println("Checking: " + checking);
-                System.out.println("Savings: " + savings);
+                System.out.println(Accounts());
                 validated = 1;
 
             } else {
@@ -73,14 +73,14 @@ public class Account {
             try {
                 AccountRepo ar = new AccountRepoDBImpl();
                 System.out.println("Enter an amount to transfer from personal funds to checking");
-                System.out.println("Current funds: " + funds + " | current checking: " + checking);
+                System.out.println(Accounts());
                 double fundTransfer = scan.nextDouble();
                 Account account = new Account();
                 while (ar.transferFundsToChecking(account) != null && reRun) {
                     if (fundTransfer <= funds) {
                         checking += fundTransfer;
                         funds -= fundTransfer;
-                        System.out.println("Funds: " + funds + " | checking " + checking + " | savings " + savings);
+                        System.out.println(Accounts());
                         reRun = false;
                     } else {
                         System.out.println("Insufficient funds, please enter a valid amount!");
@@ -106,7 +106,7 @@ public class Account {
             try {
                 AccountRepo ar = new AccountRepoDBImpl();
                 System.out.println("Enter an amount to transfer from personal funds to savings");
-                System.out.println("Current funds: " + funds + " | current savings: " + savings);
+                System.out.println(Accounts());
                 double savingTransfer = scan.nextDouble();
                 int transferred = 0;
                 Account account = new Account();
@@ -114,7 +114,7 @@ public class Account {
                     if (savingTransfer <= funds) {
                         savings += savingTransfer;
                         funds -= savingTransfer;
-                        System.out.println("Funds: " + funds + " | checking " + checking + " | savings " + savings);
+                        System.out.println(Accounts());
                         reRun = false;
                     } else {
                         System.out.println("Insufficient funds, please enter a valid amount!");
@@ -140,7 +140,7 @@ public class Account {
             try {
                 AccountRepo ar = new AccountRepoDBImpl();
                 System.out.println("Enter an amount to transfer from checking to savings");
-                System.out.println("Current checking: " + checking + " | current savings: " + savings);
+                System.out.println(Accounts());
                 double checkToSaving = scan.nextDouble();
                 int transferred = 0;
                 Account account = new Account();
@@ -148,7 +148,7 @@ public class Account {
                     if (checkToSaving <= checking) {
                         savings += checkToSaving;
                         checking -= checkToSaving;
-                        System.out.println("Funds: " + funds + " | checking " + checking + " | savings " + savings);
+                        System.out.println(Accounts());
                         reRun = false;
                     } else {
                         System.out.println("Insufficient funds, please enter a valid amount!");
@@ -174,7 +174,7 @@ public class Account {
             try {
                 AccountRepo ar = new AccountRepoDBImpl();
                 System.out.println("Enter an amount to transfer from savings to checking");
-                System.out.println("Current savings: " + savings + " | current checking: " + checking);
+                System.out.println(Accounts());
                 double savingToCheck = scan.nextDouble();
 
                 Account account = new Account();
@@ -182,7 +182,7 @@ public class Account {
                     if (savingToCheck <= savings) {
                         checking += savingToCheck;
                         savings -= savingToCheck;
-                        System.out.println("Funds: " + funds + " | checking " + checking + " | savings " + savings);
+                        System.out.println(Accounts());
                         reRun = false;
                     } else {
                         System.out.println("Insufficient savings, please enter a valid amount!");
@@ -208,14 +208,14 @@ public class Account {
             try {
                 AccountRepo ar = new AccountRepoDBImpl();
                 System.out.println("Enter an amount to withdraw from savings to funds");
-                System.out.println("Current savings: " + savings + " | current funds: " + funds);
+                System.out.println(Accounts());
                 double savingToFunds = scan.nextDouble();
                 Account account = new Account();
                 while (ar.withdrawFromSavings(account) != null && reRun) {
                     if (savingToFunds <= savings) {
                         funds += savingToFunds;
                         savings -= savingToFunds;
-                        System.out.println("Funds: " + funds + " | checking " + checking + " | savings " + savings);
+                        System.out.println(Accounts());
                         reRun = false;
                     } else {
                         System.out.println("Insufficient savings, please enter a valid amount!");
@@ -240,7 +240,7 @@ public class Account {
             try {
                 AccountRepo ar = new AccountRepoDBImpl();
                 System.out.println("Enter an amount to withdraw from checking to funds");
-                System.out.println("Current checking: " + checking + " | current funds: " + funds);
+                System.out.println(Accounts());
                 double checkingToFunds = scan.nextDouble();
                 int transferred = 0;
                 Account account = new Account();
@@ -248,7 +248,7 @@ public class Account {
                     if (checkingToFunds <= checking) {
                         funds += checkingToFunds;
                         checking -= checkingToFunds;
-                        System.out.println("Funds: " + funds + " | checking " + checking + " | savings " + savings);
+                        System.out.println(Accounts());
                         reRun = false;
                     } else {
                         System.out.println("Insufficient funds in checking, please enter a valid amount!");
@@ -302,7 +302,7 @@ public class Account {
                 } else if (command == 6) {
                     withdrawChecking();
                 } else if (command == 7) {
-                    System.out.println("Funds: " + funds + " | checking " + checking + " | savings " + savings);
+                    System.out.println(Accounts());
                 } else if (command == 8) {
                     System.out.println("Thank you, " + username + ". Goodbye!");
                     break;
